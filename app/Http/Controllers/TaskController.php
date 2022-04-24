@@ -8,9 +8,17 @@ use App\Models\Task;
 
 use App\Models\User;
 
+use App\Managers\UserManager;
+
 class TaskController extends Controller
 {
-   
+    public $user_manager;
+
+    public function __construct(UserManager $user_manager)
+    {
+        $this->user_manager = $user_manager;
+    }
+ 
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +27,7 @@ class TaskController extends Controller
     public function index()
     {
         $user_id = auth()->user()->id;
-        $user = User::find($user_id);
+        $user = $this->user_manager->getUserById($user_id);
         return view('tasks.index')->with('tasks', $user->tasks);
     }
 
