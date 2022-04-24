@@ -6,17 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Models\Task;
 
+use App\Models\User;
+
 class TaskController extends Controller
 {
-    private static function getData(){
-        return [
-            ['id'=>1, 'text'=>'This is a task one'],
-            ['id'=>2, 'text'=>'This is a task two'],
-            ['id'=>3, 'text'=>'This is a task three'],
-            ['id'=>4, 'text'=>'This is a task four']
-        ];
-    }
-
+   
     /**
      * Display a listing of the resource.
      *
@@ -24,9 +18,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('tasks.index', [
-            'tasks'=>Task::all()
-        ]);
+        $user_id = auth()->user()->id;
+        $user = User::find($user_id);
+        return view('tasks.index')->with('tasks', $user->tasks);
     }
 
     /**
