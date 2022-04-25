@@ -1,25 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('ToDo List') }}
+            {{ __('Task Editor') }}
         </h2>
     </x-slot>
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <form class="form bg-white p-6 border-1" method='POST' action="{{ route('tasks.update', ['task'=>$task->id])}}">
-                @csrf
-                @method('PUT')
-                <div>
-                    <label clas="text-sm" for="task-name">Task Name</label>
-                    <input class="text-lg border-1" type="text" value="{{ $task->name }}"id="task-name" name="task-name">
-                    @error('task-name')
-                        <div class=form-error>
-                            {{ $message }}
-                        </div>
-                    @enderror
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+
+    @include('inc.taskeditor')
+
+                    </div>
                 </div>
-                <div>
-                    <button class="border-1" type="submit">Submit</button>
-                </div>
-            </form>
+            </div>
         </div>
 </x-app-layout> 

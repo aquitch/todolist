@@ -12,5 +12,10 @@
 @include('inc.taskbar')
  
 @include('inc.tasklist')
+
+                </div>
+            </div>
+        </div>
+    </div>
                     
 </x-app-layout>

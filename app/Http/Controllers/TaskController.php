@@ -96,18 +96,16 @@ class TaskController extends Controller
     public function update(Request $request, $task)
     {
         $request->validate([
-            'task-name'=>'required',
-            'task-content'=>'required'
+            'task-name'=>'required'
         ]);
 
         $record = Task::findOrFail($task);
 
         $record->name=strip_tags($request->input('task-name'));
-        $record->content=strip_tags($request->input('task-content'));
 
         $record->save();
 
-        return redirect()->route('tasks.show', $task);
+        return redirect()->route('tasks.index', $task);
     }
 
     /**

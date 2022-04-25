@@ -1387,6 +1387,7 @@ select {
   display: inline-block;
   font-size: 16px;
   transition-duration: 0.4s;
+  margin: 5px;
 }
 
 .btn:hover {
@@ -1400,6 +1401,10 @@ select {
 
 .btn-yellow{
   background-color: #ff4800; /* Red */
+}
+
+.gap{
+  margin-right: 5px;
 }
 
 
