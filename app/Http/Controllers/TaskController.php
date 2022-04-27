@@ -18,9 +18,14 @@ class TaskController extends Controller
      */
     public function index()
     {
+        if(isset(auth()->user()->id)){
+            
+        
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
         return view('tasks.index')->with('tasks', $user->tasks);
+        }
+        else abort(401);
     }
 
     /**
@@ -30,7 +35,10 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('tasks.create');
+        if(isset(auth()->user()->id)){
+            return view('tasks.create');
+        }
+        else return abort(401);
     }
 
     /**
@@ -40,18 +48,21 @@ class TaskController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'task-name'=>'required',
-        ]);
+    {   
+        if(isset(auth()->user()->id)){
+            $request->validate([
+                'task-name'=>'required',
+            ]);
 
-        $task = new Task();
-        $task->name=strip_tags($request->input('task-name'));
-        $task->user_id=auth()->user()->id;
+            $task = new Task();
+            $task->name=strip_tags($request->input('task-name'));
+            $task->user_id=auth()->user()->id;
 
-        $task->save();
+            $task->save();
 
-        return redirect()->route('tasks.index');
+            return redirect()->route('tasks.index');
+        }
+        else return abort(401);
     }
 
     /**
@@ -81,9 +92,15 @@ class TaskController extends Controller
      */
     public function edit($task)
     {
-        return view('tasks.edit', [
-            'task'=>Task::findOrFail($task)
-        ]);
+        $output = Task::findOrFail($task);
+        if($output->user_id == auth()->user()->id)
+
+            if(isset(auth()->user()->id)){
+                return view('tasks.edit', [
+                    'task'=>$output
+                ]);
+                } else abort(401);
+        else return abort(401);
     }
 
     /**
@@ -95,17 +112,20 @@ class TaskController extends Controller
      */
     public function update(Request $request, $task)
     {
-        $request->validate([
-            'task-name'=>'required'
-        ]);
+        if(isset(auth()->user()->id)){
 
-        $record = Task::findOrFail($task);
+            $request->validate([
+                'task-name'=>'required'
+            ]);
 
-        $record->name=strip_tags($request->input('task-name'));
+            $record = Task::findOrFail($task);
 
-        $record->save();
+            $record->name=strip_tags($request->input('task-name'));
 
-        return redirect()->route('tasks.index', $task);
+            $record->save();
+
+            return redirect()->route('tasks.index');
+        } else return abort(401);
     }
 
     /**
@@ -117,10 +137,12 @@ class TaskController extends Controller
     public function destroy($task)
     {
         //Task::where('id', $task)->delete();
-        $record = Task::findOrFail($task);
-        $record->delete();
+        if(isset(auth()->user()->id)){
+            $record = Task::findOrFail($task);
+            $record->delete();
 
-        return redirect()->route('tasks.index');
+            return redirect()->route('tasks.index');
+        }else return abort(401);
     }
 }
 
